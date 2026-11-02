@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>セトカン カレンダー2027（ウェブ版）</title>
+  <meta name="description" content="セトカンと過ごす、毎日のカレンダー＆12星座占い">
+  <link rel="icon" href="favicon.png?v=5" type="image/png" sizes="512x512">
+
+  <!-- OGP -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="セトカン カレンダー2027（ウェブ版）">
+  <meta property="og:description" content="セトカンと過ごす、毎日のカレンダー＆12星座占い">
+  <meta property="og:site_name" content="セトカン カレンダー2027（ウェブ版）">
+  <meta property="og:image" content="icons/icon-512.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#FFF8E1">
+
+  <!-- iOS ホーム画面対応 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="セトカン2027">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 認証画面 -->
+  <div id="auth-screen" class="auth-screen">
+    <div class="auth-inner">
+
+      <div class="auth-title-area">
+        <h1 class="auth-title">✦ セトカン カレンダー2027 ✦</h1>
+      </div>
+
+      <div class="auth-img-wrap">
+        <img id="auth-bg-img" class="auth-bg-img" src="" alt="">
+        <div class="auth-overlay">
+          <p class="auth-overlay-label">メールアドレスを入力して<br>スタート！</p>
+          <div class="auth-input-wrap">
+            <input
+              type="email"
+              id="auth-email"
+              class="auth-input"
+              placeholder="正確に入力@email.com"
+              autocomplete="email"
+            />
+          </div>
+          <button id="auth-submit-btn" class="auth-submit-btn">🩷 スタート 🩷</button>
+          <p id="auth-error" class="auth-error" hidden></p>
+        </div>
+      </div>
+
+      <div class="auth-bottom-pad"></div>
+    </div>
+  </div>
+
+  <div class="container" hidden>
+    <header>
+      <h1><span class="deco-symbol">✦</span> セトカン カレンダー2027 <span class="deco-symbol">✦</span></h1>
+      <p class="date" id="today-date"></p>
+    </header>
+
+    <!-- Page: カレンダー（トップ） -->
+    <section id="page-calendar" class="page" hidden>
+
+      <!-- PWAインストールバナー -->
+      <div id="install-banner" class="install-banner" hidden>
+        <span class="install-banner-icon">📲</span>
+        <span class="install-banner-text" id="install-banner-text">ホーム画面に追加できます</span>
+        <button id="install-btn" class="install-btn">追加する</button>
+        <button id="install-close" class="install-close" aria-label="閉じる">✕</button>
+      </div>
+
+      <!-- iOSインストール手順ポップアップ -->
+      <div id="ios-popup-overlay" class="ios-popup-overlay" hidden></div>
+      <div id="ios-popup" class="ios-popup" hidden>
+        <button id="ios-popup-close" class="ios-popup-close" aria-label="閉じる">✕</button>
+        <p class="ios-popup-title">📲 ホーム画面への追加方法</p>
+        <ul class="ios-steps">
+          <li>
+            <span class="step-num">1</span>
+            <span class="step-body">画面下部の <strong>共有ボタン</strong> をタップ<br><span class="step-sub">「⬆️」のマークのボタンです</span></span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span class="step-body">メニューをスクロールして<br><strong>「ホーム画面に追加」</strong> をタップ<br><span class="step-sub">「＋」マークのアイコンが目印です</span></span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span class="step-body">右上の <strong>「追加」</strong> をタップして完了<br><span class="step-sub">アプリのように起動できます ✦</span></span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 月表示 -->
+      <div id="month-view">
+        <div class="cal-nav">
+          <button class="cal-nav-btn" id="month-prev">＜ 前の月</button>
+          <h2 class="cal-label" id="month-label"></h2>
+          <button class="cal-nav-btn" id="month-next">次の月 ＞</button>
+        </div>
+        <div class="cal-board">
+          <img class="cal-bg-img" id="cal-bg-img" src="" alt="">
+          <div class="cal-weekdays">
+            <span class="sun">日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span class="sat">土</span>
+          </div>
+          <div class="cal-grid" id="month-grid"></div>
+        </div>
+      </div>
+
+      <button class="today-fortune-btn" id="today-fortune-btn">✦ 今日の占いを見る ✦</button>
+      <p class="cal-toast" id="cal-toast" role="status" hidden>占いは当日のみ表示されます</p>
+    </section>
+
+    <!-- Page: 今日の占い（12星座グリッド） -->
+    <section id="page-today" class="page" hidden>
+      <p class="label">✦ 今日の占い ✦</p>
+      <p class="today-sub" id="today-fortune-date"></p>
+      <div class="sign-grid" id="sign-grid"></div>
+      <div class="today-nav">
+        <button class="nav-btn back-btn" id="today-back">← カレンダーへ</button>
+      </div>
+    </section>
+
+    <!-- Page: 総合運 -->
+    <section id="page-overall" class="page fortune-page" hidden>
+      <div class="fortune-img-area">
+        <div class="fortune-page-heading">✦ セトカン カレンダー2027 ✦</div>
+        <div class="fortune-img-frame">
+          <img class="fortune-img" id="beauty-img-overall" src="" alt="">
+          <div class="sign-overlay-top">
+            <div class="sign-icon-sm" id="portrait-overall"></div>
+            <span class="sign-header-name" id="charname-overall"></span>
+          </div>
+          <div class="lucky-overlay">
+            <div class="lucky-overlay-inner">
+              <span class="lucky-overlay-badge">✦ ラッキーカラー：<span id="lucky-color"></span></span>
+              <span class="lucky-overlay-badge">✦ ラッキーナンバー：<span id="lucky-number"></span></span>
+            </div>
+          </div>
+        </div>
+        <div class="fortune-title-below">
+          <h2 class="fortune-title"><span class="fortune-title-date"></span><span class="fortune-title-main" id="overall-title"></span></h2>
+        </div>
+      </div>
+      <div class="fortune-content card-overall">
+        <div class="stars" id="stars-overall"></div>
+        <p class="fortune-text" id="text-overall"></p>
+      </div>
+      <div class="nav-buttons fortune-nav">
+        <button class="nav-btn back-btn" id="overall-back">← 戻る</button>
+        <button class="nav-btn next-btn" id="overall-next">次へ →</button>
+      </div>
+    </section>
+
+    <!-- Page: 恋愛運 -->
+    <section id="page-love" class="page fortune-page" hidden>
+      <div class="fortune-img-area">
+        <div class="fortune-page-heading">✦ セトカン カレンダー2027 ✦</div>
+        <div class="fortune-img-frame">
+          <img class="fortune-img" id="beauty-img-love" src="" alt="">
+          <div class="sign-overlay-top">
+            <div class="sign-icon-sm" id="portrait-love"></div>
+            <span class="sign-header-name" id="charname-love"></span>
+          </div>
+          <div class="lucky-overlay">
+            <div class="lucky-overlay-inner">
+              <span class="lucky-overlay-badge">✦ ラッキーカラー：<span id="lucky-color-love"></span></span>
+              <span class="lucky-overlay-badge">✦ ラッキーナンバー：<span id="lucky-number-love"></span></span>
+            </div>
+          </div>
+        </div>
+        <div class="fortune-title-below">
+          <h2 class="fortune-title"><span class="fortune-title-date"></span><span class="fortune-title-main" id="love-title"></span></h2>
+        </div>
+      </div>
+      <div class="fortune-content card-love">
+        <div class="stars" id="stars-love"></div>
+        <p class="fortune-text" id="text-love"></p>
+      </div>
+      <div class="nav-buttons fortune-nav">
+        <button class="nav-btn back-btn" id="love-back">← 戻る</button>
+        <button class="nav-btn next-btn" id="love-next">次へ →</button>
+      </div>
+    </section>
+
+    <!-- Page: 仕事運 -->
+    <section id="page-work" class="page fortune-page" hidden>
+      <div class="fortune-img-area">
+        <div class="fortune-page-heading">✦ セトカン カレンダー2027 ✦</div>
+        <div class="fortune-img-frame">
+          <img class="fortune-img" id="beauty-img-work" src="" alt="">
+          <div class="sign-overlay-top">
+            <div class="sign-icon-sm" id="portrait-work"></div>
+            <span class="sign-header-name" id="charname-work"></span>
+          </div>
+          <div class="lucky-overlay">
+            <div class="lucky-overlay-inner">
+              <span class="lucky-overlay-badge">✦ ラッキーカラー：<span id="lucky-color-work"></span></span>
+              <span class="lucky-overlay-badge">✦ ラッキーナンバー：<span id="lucky-number-work"></span></span>
+            </div>
+          </div>
+        </div>
+        <div class="fortune-title-below">
+          <h2 class="fortune-title"><span class="fortune-title-date"></span><span class="fortune-title-main" id="work-title"></span></h2>
+        </div>
+      </div>
+      <div class="fortune-content card-work">
+        <div class="stars" id="stars-work"></div>
+        <p class="fortune-text" id="text-work"></p>
+      </div>
+      <div class="nav-buttons fortune-nav">
+        <button class="nav-btn back-btn" id="work-back">← 戻る</button>
+        <button class="nav-btn next-btn" id="work-next">次へ →</button>
+      </div>
+    </section>
+
+    <!-- Page: 金運 -->
+    <section id="page-money" class="page fortune-page" hidden>
+      <div class="fortune-img-area">
+        <div class="fortune-page-heading">✦ セトカン カレンダー2027 ✦</div>
+        <div class="fortune-img-frame">
+          <img class="fortune-img" id="beauty-img-money" src="" alt="">
+          <div class="sign-overlay-top">
+            <div class="sign-icon-sm" id="portrait-money"></div>
+            <span class="sign-header-name" id="charname-money"></span>
+          </div>
+          <div class="lucky-overlay">
+            <div class="lucky-overlay-inner">
+              <span class="lucky-overlay-badge">✦ ラッキーカラー：<span id="lucky-color-money"></span></span>
+              <span class="lucky-overlay-badge">✦ ラッキーナンバー：<span id="lucky-number-money"></span></span>
+            </div>
+          </div>
+        </div>
+        <div class="fortune-title-below">
+          <h2 class="fortune-title"><span class="fortune-title-date"></span><span class="fortune-title-main" id="money-title"></span></h2>
+        </div>
+      </div>
+      <div class="fortune-content card-money">
+        <div class="stars" id="stars-money"></div>
+        <p class="fortune-text" id="text-money"></p>
+      </div>
+      <div class="nav-buttons fortune-nav">
+        <button class="nav-btn back-btn" id="money-back">← 戻る</button>
+        <button class="nav-btn next-btn next-btn-top" id="money-next">🏠 トップへ</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service-worker.js');
+    }
+  </script>
+</body>
+</html>

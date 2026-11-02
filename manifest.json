@@ -1,0 +1,25 @@
+{
+  "name": "セトカン カレンダー2027（ウェブ版）",
+  "short_name": "セトカン2027",
+  "description": "2026年11月〜2027年12月の祝日入りカレンダーと毎日の12星座占い",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF8E1",
+  "theme_color": "#FFA000",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

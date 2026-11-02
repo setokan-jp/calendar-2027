@@ -1,0 +1,1084 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rose:       #8D6E63;
+  --rose-light: #FFB300;
+  --rose-dark:  #6D4C41;
+  --bg-top:     #FFF8E1;
+  --bg-mid:     #FFECB3;
+  --bg-btm:     #FFE082;
+  --card-bg:    rgba(255, 248, 225, 0.92);
+  --card-border:rgba(141, 110, 99, 0.22);
+  --text-main:  #8D6E63;
+  --text-sub:   #A1887F;
+}
+
+html {
+  overflow-x: hidden;
+  background-color: #FFF8E1 !important;
+}
+
+body {
+  font-family: 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
+  background-color: #FFF8E1 !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: var(--text-main);
+  overflow-x: hidden;
+}
+
+/* ── Auth Screen ── */
+.auth-screen {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 200;
+  overflow-y: auto;
+}
+
+.auth-inner {
+  width: 100%;
+  max-width: 430px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: calc(16px + env(safe-area-inset-top));
+  animation: fadeUp 0.5s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.auth-title-area {
+  text-align: center;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+/* 幅320pxでも1行に収まるサイズ（タイトルが長いので固定値を幅ごとに手動調整） */
+.auth-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--rose);
+  margin-bottom: 4px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+@media (min-width: 375px) {
+  .auth-title { font-size: 23px; }
+}
+@media (min-width: 431px) {
+  .auth-title { font-size: 1.6rem; }
+}
+
+.auth-img-wrap {
+  position: relative;
+  width: 90%;
+  aspect-ratio: 2 / 3;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.auth-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+.auth-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.7));
+  padding: 32px 20px 20px;
+}
+
+.auth-overlay-label {
+  color: #fff;
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+
+.auth-input-wrap { margin-bottom: 12px; }
+
+.auth-input {
+  width: 100%;
+  padding: 13px 18px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px; /* 16px未満だとiOS Safariがフォーカス時に自動ズームする */
+  font-family: inherit;
+  text-align: center;
+  color: var(--rose-dark);
+  background: rgba(255,255,255,0.9);
+  outline: none;
+  box-sizing: border-box;
+  transition: box-shadow 0.2s;
+}
+
+.auth-input:focus {
+  box-shadow: 0 0 0 2px rgba(141,110,99,0.35);
+}
+
+.auth-input::placeholder { color: rgba(141,110,99,0.55); }
+
+.auth-submit-btn {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, #F57F17, #FFA000);
+  border: none;
+  border-radius: 25px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  box-shadow: 0 4px 20px rgba(245,127,23,0.4);
+  box-sizing: border-box;
+  transition: all 0.2s;
+}
+
+.auth-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(245,127,23,0.52);
+}
+
+.auth-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.auth-error {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: #FFE082;
+  text-align: center;
+}
+
+.auth-bottom-pad { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+
+/* ── Container ── */
+.container {
+  max-width: 430px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 16px calc(100px + env(safe-area-inset-bottom));
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+/* ── Header ── */
+header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(141,110,99,0.18);
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #6D4C41;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+.date {
+  margin-top: 8px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #5D4037;
+  letter-spacing: 0.08em;
+}
+
+/* ── Page transitions ── */
+.page { animation: pageReveal 0.4s ease; }
+
+@keyframes pageReveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Install Banner ── */
+.install-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(141,110,99,0.06);
+  border: 1px solid rgba(141,110,99,0.22);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+}
+
+.install-banner-icon { font-size: 1.2rem; flex-shrink: 0; }
+
+.install-banner-text {
+  flex: 1;
+  font-size: 0.77rem;
+  color: var(--rose);
+  letter-spacing: 0.03em;
+}
+
+.install-btn {
+  font-family: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 50px;
+  border: 1px solid var(--rose);
+  background: transparent;
+  color: var(--rose);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.install-btn:hover { background: rgba(141,110,99,0.08); }
+
+.install-close {
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+/* ── iOS Popup ── */
+.ios-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(80,50,30,0.4);
+  backdrop-filter: blur(5px);
+  z-index: 100;
+}
+
+.ios-popup {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(96vw, 430px);
+  background: #FFFDF5;
+  border: 1px solid rgba(141,110,99,0.28);
+  border-bottom: none;
+  border-radius: 22px 22px 0 0;
+  padding: 28px 24px calc(40px + env(safe-area-inset-bottom));
+  z-index: 101;
+  box-shadow: 0 -8px 40px rgba(141,110,99,0.12);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateX(-50%) translateY(100%); }
+  to   { transform: translateX(-50%) translateY(0); }
+}
+
+.ios-popup-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: rgba(141,110,99,0.08);
+  border: 1px solid rgba(141,110,99,0.25);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 0.8rem;
+  color: var(--rose);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.ios-popup-close:hover { background: rgba(141,110,99,0.15); }
+
+.ios-popup-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--rose);
+  text-align: center;
+  margin-bottom: 20px;
+  letter-spacing: 0.06em;
+}
+
+.ios-steps { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.ios-steps li { display: flex; align-items: flex-start; gap: 12px; }
+
+.step-num {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--rose-dark), var(--rose-light));
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-body { font-size: 0.84rem; color: var(--text-main); line-height: 1.65; }
+.step-body strong { color: var(--rose); }
+.step-sub { font-size: 0.74rem; color: var(--text-sub); }
+
+/* ── Sign Selector Label ── */
+.label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #6D4C41;
+  text-align: center;
+  margin-bottom: 20px;
+  letter-spacing: 0.12em;
+  opacity: 1;
+}
+
+/* ── Sign Grid ── */
+.sign-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+  padding: 0 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.sign-btn {
+  background: #C8A165;
+  border: 1px solid #FFE082;
+  border-radius: 14px;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.sign-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,179,0,0.14), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.sign-btn:hover {
+  background: #FFF8E1;
+  border-color: #FFB300;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(141,110,99,0.16), 0 0 0 1px rgba(141,110,99,0.1);
+}
+
+.sign-btn:hover::after { opacity: 1; }
+.sign-btn:active { transform: scale(0.96); }
+
+.sign-btn .char-icon { width: 54px; height: 62px; position: relative; z-index: 1; color: #6D4C41; }
+
+.sign-btn-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 14px;
+  padding: 0;
+  margin: 0;
+  background: #C8A165;
+}
+
+.sign-btn-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  display: block;
+}
+
+.sign-btn .btn-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.06em;
+  text-align: center;
+  padding: 6px 4px 7px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.btn-zodiac-icon {
+  display: inline-flex;
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  color: #ffffff;
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.95));
+}
+
+.btn-zodiac-icon svg {
+  width: 19px;
+  height: 19px;
+  display: block;
+}
+
+/* ── Fortune Pages (full-screen overlay) ── */
+/* 画像・本文・ボタンの共通幅。画面の高さが足りないときは画像を縮めて1画面に収める */
+.fortune-page {
+  --fortune-w: min(calc(min(100vw, 430px) - 40px), max(200px, calc(100vh - 372px)));
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 430px;
+  z-index: 5;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #FFF8E1;
+  padding-top: env(safe-area-inset-top);
+  animation: none;
+}
+
+@supports (height: 100dvh) {
+  .fortune-page {
+    --fortune-w: min(calc(min(100vw, 430px) - 40px), max(200px, calc(100dvh - 372px)));
+  }
+}
+
+.fortune-page:not([hidden]) {
+  display: flex;
+}
+
+.fortune-img-area {
+  flex-shrink: 0;
+  padding: 0 16px 0;
+}
+
+.fortune-page-heading {
+  font-size: 1.125rem;
+  color: #6D4C41;
+  text-align: center;
+  letter-spacing: 0.14em;
+  font-weight: 800;
+  white-space: nowrap;
+  padding: 12px 0 0;
+  margin-bottom: 12px;
+}
+
+/* 白っぽい写真の上でも読めるよう、半透明の暗い角丸ラベルを敷く */
+.sign-overlay-top {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px 4px 7px;
+  border-radius: 50px;
+  background: rgba(0,0,0,0.42);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.sign-icon-sm {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));
+}
+
+.sign-header-name {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.96);
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  white-space: nowrap;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.55);
+}
+
+.fortune-img-frame {
+  position: relative;
+  width: var(--fortune-w);
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 12px;
+  opacity: 0;
+}
+
+@keyframes fortuneImgReveal {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fortune-img-frame.is-visible {
+  animation: fortuneImgReveal 0.8s ease-out 0.8s both;
+}
+
+.lucky-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.6));
+  padding: 24px 14px 14px;
+  border-radius: 0 0 12px 12px;
+}
+
+.lucky-overlay-inner {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.lucky-overlay-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+}
+
+.fortune-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  display: block;
+}
+
+.fortune-title-below {
+  padding: 18px 16px 0;
+  text-align: center;
+}
+
+.fortune-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #5D4037;
+  letter-spacing: 0.08em;
+}
+
+.fortune-title-date {
+  display: block;
+  font-size: 0.8em;
+  font-weight: 700;
+  color: #6D4C41;
+  letter-spacing: 0.06em;
+  margin-bottom: 2px;
+}
+
+.fortune-title-main {
+  display: block;
+}
+
+/* ── Fortune Content (below image) ── */
+.fortune-content {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: var(--fortune-w);
+  margin: 0 auto;
+  padding: 12px 0 4px;
+  gap: 8px;
+}
+
+.fortune-content .stars {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  flex-shrink: 0;
+  letter-spacing: 3px;
+  color: #F57F17;
+}
+
+@keyframes starPop {
+  0%   { opacity: 0; transform: scale(0.3); }
+  60%  { opacity: 1; transform: scale(1.3); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.star-pop {
+  display: inline-block;
+  animation: starPop 0.5s ease forwards;
+}
+
+.fortune-content .fortune-text {
+  font-size: 0.83rem;
+  line-height: 1.88;
+  flex: 1;
+  color: #5D4037;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.fortune-content.card-overall,
+.fortune-content.card-love,
+.fortune-content.card-work,
+.fortune-content.card-money { border-top: none; }
+
+/* ── Lucky Badges (top page) ── */
+.lucky-inline {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.lucky-badge {
+  padding: 5px 16px;
+  background: rgba(141,110,99,0.07);
+  border: 1px solid rgba(141,110,99,0.22);
+  border-radius: 50px;
+  font-size: 0.73rem;
+  color: var(--rose);
+  letter-spacing: 0.05em;
+}
+
+/* ── Nav Buttons ── */
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 22px;
+  gap: 10px;
+}
+
+.nav-btn {
+  font-family: inherit;
+  font-size: 0.87rem;
+  font-weight: 800;
+  padding: 6px 22px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.22s;
+  letter-spacing: 0.07em;
+}
+
+.back-btn {
+  background: transparent;
+  border: 1.5px solid #8D6E63;
+  color: #6D4C41;
+}
+
+.back-btn:hover {
+  border-color: var(--rose-dark);
+  background: rgba(141,110,99,0.07);
+  transform: translateX(-3px);
+}
+
+.next-btn {
+  background: linear-gradient(135deg, #F57F17, #FFA000);
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(245,127,23,0.32);
+}
+
+.next-btn:hover {
+  transform: translateX(3px);
+  box-shadow: 0 7px 26px rgba(141,110,99,0.44);
+  background: linear-gradient(135deg, #EF6C00, #FF8F00);
+}
+
+.next-btn-top {
+  background: linear-gradient(135deg, #F57F17, #FFA000);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(141,110,99,0.28);
+}
+
+.next-btn-top:hover {
+  box-shadow: 0 7px 26px rgba(141,110,99,0.44);
+  background: linear-gradient(135deg, #EF6C00, #FF8F00);
+}
+
+.fortune-nav {
+  flex-shrink: 0;
+  width: max(var(--fortune-w), min(calc(100vw - 40px), 260px));
+  margin: 0 auto;
+  padding: 0 0 calc(36px + env(safe-area-inset-bottom));
+}
+
+/* ── Responsive (iPhone 13 390×844px 基準) ── */
+@media (max-width: 430px) {
+  /* コンテナ */
+  .container { padding: calc(12px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom)); }
+
+  /* ヘッダー */
+  header { margin-bottom: 12px; padding-bottom: 10px; }
+  h1 { font-size: 1.3rem; letter-spacing: 0.08em; }
+  /* 幅375px未満ではタイトルが1行に収まるよう縮める */
+  @media (max-width: 374px) {
+    h1 { font-size: 19px; }
+  }
+  .date { margin-top: 5px; font-size: 0.8rem; }
+
+  /* ラベル */
+  .label { font-size: 0.95rem; margin-bottom: 10px; letter-spacing: 0.08em; }
+
+  /* PWAインストールバナーは常に非表示 */
+  .install-banner { display: none !important; }
+
+  /* 星座グリッド：3列、正方形カード */
+  .sign-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; padding: 0 12px; gap: 6px; margin-bottom: 8px; }
+  .sign-btn-img-wrap { border-radius: 12px; }
+  .sign-btn { border-radius: 12px; }
+  .sign-btn .btn-name { font-size: 16px; padding: 6px 4px 7px; }
+  .btn-zodiac-icon { width: 17px; height: 17px; }
+  .btn-zodiac-icon svg { width: 17px; height: 17px; }
+
+  /* 占い結果ページ */
+  .fortune-page { padding-top: 0; }
+  .fortune-img-area { padding: 6px 0 0; }
+  .fortune-page-heading { font-size: 1rem; padding: 8px 0 0; margin-bottom: 8px; }
+  .fortune-title-below { padding: 14px 12px 0; }
+  .fortune-title { font-size: 1rem; }
+  .fortune-content { padding: 6px 0 4px; gap: 6px; }
+  .fortune-content .stars { font-size: 1.1rem; letter-spacing: 2px; }
+  .fortune-content .fortune-text { font-size: 0.9rem; line-height: 1.7; }
+  .fortune-nav { padding: 0 0 calc(20px + env(safe-area-inset-bottom)); }
+  .nav-btn { padding: 10px 22px; font-size: 0.87rem; }
+  .sign-btn .char-icon { width: 44px; height: 50px; }
+}
+
+/* ── Override: はみ出し強制防止（最終上書き） ── */
+html, body {
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+}
+
+.container {
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+  box-sizing: border-box !important;
+}
+
+.sign-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 0 8px !important;
+  gap: 6px !important;
+}
+
+/* ── PC Layout (768px以上) ── */
+@media (min-width: 768px) {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: linear-gradient(180deg, #FFF8E1 0%, #FFECB3 50%, #FFD54F 100%) !important;
+  }
+
+  .container {
+    max-width: 430px !important;
+    width: 100% !important;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: #FFF8E1;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+    border-radius: 0;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .sign-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    padding: 0 12px !important;
+    gap: 8px !important;
+  }
+
+  .install-banner {
+    display: none !important;
+  }
+
+  @keyframes heartFloat {
+    0%   { transform: translateY(0)       translateX(0);     opacity: 0; }
+    8%   { transform: translateY(-8vh)    translateX(15px);  opacity: 1; }
+    25%  { transform: translateY(-25vh)   translateX(25px); }
+    50%  { transform: translateY(-50vh)   translateX(-20px); }
+    75%  { transform: translateY(-75vh)   translateX(18px); }
+    90%  { transform: translateY(-100vh)  translateX(-10px); opacity: 0.45; }
+    100% { transform: translateY(-115vh)  translateX(0);     opacity: 0; }
+  }
+
+  .heart-float {
+    position: fixed;
+    bottom: -30px;
+    color: rgba(230, 81, 0, 0.6);
+    pointer-events: none;
+    z-index: 0;
+    line-height: 1;
+    animation: heartFloat linear infinite;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   セトカン カレンダー2027 追加スタイル
+   ═══════════════════════════════════════════ */
+/* ── カレンダー：ナビ ── */
+.cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.cal-label {
+  flex: 1;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #5D4037;
+  letter-spacing: 0.06em;
+}
+
+.cal-nav-btn {
+  font-family: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 6px 10px;
+  border: 1.5px solid #8D6E63;
+  border-radius: 50px;
+  background: transparent;
+  color: #8D6E63;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cal-nav-btn:hover:not(:disabled) { background: rgba(141,110,99,0.08); }
+.cal-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ── 月表示（背景に月ごとの美女画像、マスはすりガラス） ── */
+/* カレンダー画面は縦いっぱいに広げ、余った高さはマスの高さで吸収する */
+body[data-page="page-calendar"] .container:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+body[data-page="page-calendar"] .container:not([hidden]) {
+  padding-bottom: calc(36px + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 431px) {
+  body[data-page="page-calendar"] .container:not([hidden]) {
+    padding-top: calc(20px + env(safe-area-inset-top));
+  }
+  body[data-page="page-calendar"] header { margin-bottom: 18px; padding-bottom: 14px; }
+}
+
+#page-calendar:not([hidden]),
+#month-view {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.cal-board {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 16px;
+  padding: 5px;
+  background: #8D6E63;
+}
+
+.cal-bg-img {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  display: block;
+}
+
+.cal-weekdays,
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.cal-grid {
+  flex: 1 0 auto;
+  grid-auto-rows: minmax(60px, 1fr);
+}
+
+/* マスは透明。文字は白＋暗い影で、明るい写真でも暗い写真でも読めるようにする */
+.cal-weekdays {
+  margin-bottom: 4px;
+  padding: 3px 0;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.28);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 0 1px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.85), 0 0 5px rgba(0,0,0,0.6);
+}
+
+.cal-weekdays .sun { color: #FF8A80; }
+.cal-weekdays .sat { color: #82B1FF; }
+
+.cal-cell {
+  font-family: inherit;
+  min-height: 56px;
+  padding: 4px 1px 3px;
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 10px;
+  background: transparent;
+  box-shadow: 0 0 2px rgba(0,0,0,0.35); /* 明るい写真でも白い枠線が見えるように */
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.cal-cell.is-empty {
+  border-color: transparent;
+  box-shadow: none;
+  cursor: default;
+}
+.cal-cell:not(.is-empty):hover { border-color: #FFB300; }
+
+.cal-day {
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  border-radius: 50%;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 0 1px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.65);
+}
+
+.cal-holiday {
+  font-size: clamp(7.5px, 2.4vw, 9.5px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: #FFAB9F;
+  text-shadow: 0 0 1px rgba(0,0,0,1), 0 1px 2px rgba(0,0,0,0.95), 0 0 4px rgba(0,0,0,0.8);
+}
+
+.cal-holiday span { display: block; white-space: nowrap; }
+
+.is-sun .cal-day, .is-holiday .cal-day { color: #FF8A80; }
+.is-sat .cal-day { color: #82B1FF; }
+
+.cal-cell.is-today {
+  border: 3px solid #FF9800;
+  background: rgba(255,152,0,0.22);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.9), 0 0 12px rgba(255,152,0,0.95);
+}
+.cal-cell.is-today .cal-day {
+  background: linear-gradient(135deg, #F57F17, #FFA000);
+  color: #fff;
+  text-shadow: none;
+}
+
+/* ── 今日の占いボタン ── */
+.today-fortune-btn {
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+  padding: 14px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #fff;
+  background: linear-gradient(135deg, #F57F17, #FFA000);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(245,127,23,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.today-fortune-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(245,127,23,0.5); }
+
+/* ── トースト ── */
+.cal-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(32px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 50;
+  padding: 8px 18px;
+  font-size: 0.78rem;
+  color: #fff;
+  background: rgba(93,64,55,0.88);
+  border-radius: 50px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: fadeUp 0.25s ease;
+}
+
+/* ── 今日の占い ── */
+.today-sub {
+  margin: -12px 0 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  color: #8D6E63;
+}
+
+.today-nav { display: flex; justify-content: center; margin-top: 16px; }
