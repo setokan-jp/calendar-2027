@@ -6,7 +6,7 @@ const APP_STORAGE_PREFIX = 'setokan2027';
 
 // 共有の画像プール（認証画面・今日の占いグリッド・占いページ・カレンダー背景で使用）
 // images/pool/seto-kanna-001.webp 〜 の連番画像。画像を追加したら IMAGE_POOL_COUNT を変えるだけでよい
-const IMAGE_POOL_COUNT = 215;
+const IMAGE_POOL_COUNT = 212;
 
 // プールから除外する画像の番号（1始まり。例: [12, 45]）
 const IMAGE_POOL_EXCLUDED = [];
