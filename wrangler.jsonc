@@ -1,0 +1,17 @@
+// セトカン カレンダー2027（ウェブ版）を Cloudflare Workers の静的アセットとして app.setokan.jp で配信する設定。
+// Cloudflare Workers Builds で GitHub のこのリポジトリにつなぎ、push すると本番に出る（デプロイのコマンドは npx wrangler deploy）。
+// compatibility_date は、手元で確かめる wrangler@4.153.0 が対応する最新の日付（2026-11-23 はこの版では「未来の日付」で動かない）。
+// Worker のコードはない（ファイルを返すだけ）。配信しないファイルは .assetsignore、見出しは _headers
+{
+  "name": "setokan-calendar-app",
+  "compatibility_date": "2026-10-23",
+  "assets": {
+    // リポジトリのルートをそのまま配信する（.git などは .assetsignore で外す）
+    "directory": "."
+  },
+  // app.setokan.jp で出す（Cloudflare が DNS の記録と証明書を作る）
+  "routes": [{ "pattern": "app.setokan.jp", "custom_domain": true }],
+  // 仮の URL（*.workers.dev）と、版ごとの試し見の URL は出さない
+  "workers_dev": false,
+  "preview_urls": false
+}

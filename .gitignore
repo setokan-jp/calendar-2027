@@ -1,0 +1,3 @@
+# 手元の wrangler（npx wrangler dev / deploy）が作る作業用のフォルダー
+.wrangler/
+.DS_Store

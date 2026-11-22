@@ -1,6 +1,6 @@
 // 同じドメインの他のアプリのキャッシュを消さないよう、自分の接頭辞のものだけ削除する
 const CACHE_PREFIX = 'setokan-calendar-2027-';
-const CACHE_NAME = 'setokan-calendar-2027-v2';
+const CACHE_NAME = 'setokan-calendar-2027-v3';
 
 // 本番画像（images/pool）は表示したものだけを別のキャッシュに保存する
 // アプリ更新（CACHE_NAME の変更）では消さず、上限を超えたら古いものから削除する
@@ -11,10 +11,10 @@ const IMAGE_CACHE_MAX = 60;
 // Network First で扱うコアファイル（更新が頻繁）
 const NETWORK_FIRST_ASSETS = [
   './',
-  './index.html',
   './style.css',
   './script.js',
   './auth.js',
+  './sw-register.js',
 ];
 
 // Cache First で扱う静的アセット（ほぼ変わらない）

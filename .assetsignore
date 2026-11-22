@@ -1,0 +1,16 @@
+# 配信しないファイル（wrangler.jsonc の assets.directory がリポジトリのルートなので、ここで外す）。
+# 書き方は .gitignore と同じ。_headers は Cloudflare が読む設定で、ここに書かなくても配信されない
+.git
+.github
+.gitignore
+.assetsignore
+.wrangler
+.DS_Store
+node_modules
+wrangler.jsonc
+wrangler.toml
+package.json
+package-lock.json
+messages_review.md
+*.md
+.keep

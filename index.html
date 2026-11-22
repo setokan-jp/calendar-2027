@@ -12,7 +12,8 @@
   <meta property="og:title" content="セトカン カレンダー2027（ウェブ版）">
   <meta property="og:description" content="セトカンと過ごす、毎日のカレンダー＆12星座占い">
   <meta property="og:site_name" content="セトカン カレンダー2027（ウェブ版）">
-  <meta property="og:image" content="icons/icon-512.png">
+  <meta property="og:image" content="https://app.setokan.jp/icons/icon-512.png">
+  <meta property="og:url" content="https://app.setokan.jp/">
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary">
 
@@ -255,10 +256,6 @@
 
   <script src="auth.js"></script>
   <script src="script.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js');
-    }
-  </script>
+  <script src="sw-register.js"></script>
 </body>
 </html>

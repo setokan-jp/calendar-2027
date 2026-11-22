@@ -1,0 +1,32 @@
+# Cloudflare が、ファイルを返すときに付ける見出し（https://developers.cloudflare.com/workers/static-assets/headers/）
+
+# すべて：ほかのサイトの枠（iframe）の中に表示させない・ファイルの種類を推測させない・ほかのサイトへはドメインだけを送る。
+# 検索には出さない（検索の入り口は https://setokan.jp/calendar/ の LP）。
+# CSP：スクリプトはこのサイトのファイルだけ。外へ送るのはメールアドレスの登録（Google Apps Script。送ったあと
+# script.googleusercontent.com へ転送される）だけ。書体は Google Fonts（style.css の @import）
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Robots-Tag: noindex
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'
+
+# 画像・アイコン：名前に中身の指紋がないので、長く保存させすぎない（1日）
+/images/*
+  Cache-Control: public, max-age=86400
+/icons/*
+  Cache-Control: public, max-age=86400
+/favicon.png
+  Cache-Control: public, max-age=86400
+
+# ページ・スクリプト（service-worker.js も /*.js に入る）・CSS・アプリの設定：毎回、新しいものがないかを確かめる（古いものが残らないように）。
+# /index.html は Cloudflare が / へ移すので、manifest.json の start_url とサービスワーカーの保存は ./ にしてある
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/manifest.json
+  Cache-Control: no-cache
+/*.js
+  Cache-Control: no-cache
+/*.css
+  Cache-Control: no-cache
